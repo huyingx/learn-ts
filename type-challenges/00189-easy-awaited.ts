@@ -8,10 +8,10 @@ import type { Equal, Expect } from '@type-challenges/utils';
 //     : never // the argument to `then` was not callable
 //   : T; // non-object or non-thenable
 
-type MyAwaited<T extends PromiseLike<any>> = T extends PromiseLike<infer U>
-  ? U extends PromiseLike<any>
-    ? MyAwaited<U>
-    : U
+type MyAwaited<T extends PromiseLike<any>> = T extends PromiseLike<infer R>
+  ? R extends PromiseLike<any>
+    ? MyAwaited<R>
+    : R
   : never;
 
 type X = Promise<string>;
