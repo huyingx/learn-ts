@@ -20,8 +20,19 @@ type cases = [
 // https://github.com/type-challenges/type-challenges/issues/12995
 // https://github.com/type-challenges/type-challenges/issues/4275
 // https://github.com/type-challenges/type-challenges/issues/359 一个infer就能实现！
-type LengthOfString<S extends string, T extends string[] = []> = S extends `${
-  string /* 这里的string还可以当变量用，学到了 */
-}${infer R}`
-  ? LengthOfString<R, [...T, string]>
+// 转换成string元组
+// type LengthOfString<S extends string, T extends string[] = []> = S extends `${string}${infer R}`
+//   ? LengthOfString<R, [...T, string]>
+//   : T['length'];
+
+type l = LengthOfString<'reina'>; // [string, string, string, string, string]
+type LengthOfString<S extends string, T extends unknown[] = []> = S extends `${string}${infer R}`
+  ? LengthOfString<R, [...T, 1]>
   : T['length'];
+
+type XX<S extends string> = S extends `${string}${infer R}` ? [R, string] : S;
+type a = XX<'abc'>; // ["bc", string]
+type YY<S extends string> = S extends `${infer R}${string}` ? [R, string] : S;
+type b = YY<'abc'>; // ["a", string]
+
+export {};
